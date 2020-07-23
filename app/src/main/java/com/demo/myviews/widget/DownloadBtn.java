@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 import androidx.annotation.Nullable;
 
 public class DownloadBtn extends View {
+
+
+
     public DownloadBtn(Context context) {
         super(context);
     }
@@ -35,6 +38,10 @@ public class DownloadBtn extends View {
 
     private Paint mpint;
     private Path path;
+    private RectF leftRect = new RectF();
+    private RectF rightRect = new RectF();
+    private RectF progressRect = new RectF();
+
 //    1.默认状态， 2.下载中， 3.下载完成，4.暂停
     private int state = 1;
     private int prog = 0;
@@ -64,6 +71,10 @@ public class DownloadBtn extends View {
         }
     }
 
+    /**
+     * 下载完成的绘制
+     * @param canvas
+     */
     private void drawFinish(Canvas canvas){
         mpint.setColor(finishColor);
         mpint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -72,6 +83,10 @@ public class DownloadBtn extends View {
         drawText(canvas,  "下载完成", Color.WHITE);
     }
 
+    /**
+     * 绘制进度
+     * @param canvas
+     */
     private void drawProgress(Canvas canvas){
         drawBgLine(canvas);
         mpint.setColor(color);
@@ -82,16 +97,23 @@ public class DownloadBtn extends View {
 
         float toRight = b1.divide(new BigDecimal(max), 2, BigDecimal.ROUND_HALF_UP).floatValue() * width;
         Log.d(TAG, "drawProgress: " + toRight);
-        RectF rectF = new RectF(0, 0 , toRight, getHeight());
-        canvas.drawRoundRect(rectF, 0,0,mpint);
+        progressRect.setEmpty();
+        progressRect.left = 0;
+        progressRect.top = 0;
+        progressRect.right = toRight;
+        progressRect.bottom = getHeight();
+        canvas.drawRoundRect(progressRect, 0,0,mpint);
         if (prog == max){
             setState(3);
         }
     }
 
+    /**
+     * 默认状态下的绘制
+     * @param canvas
+     */
     private void drawNormal(Canvas canvas){
         drawBgLine(canvas);
-
 //      绘制圆角内部填充色
         mpint.setStyle(Paint.Style.FILL_AND_STROKE);
         mpint.setColor(Color.BLUE);
@@ -100,6 +122,12 @@ public class DownloadBtn extends View {
         drawText(canvas, "下载", Color.WHITE);
     }
 
+    /**
+     * 绘制按钮中的文本
+     * @param canvas
+     * @param text
+     * @param color
+     */
     private void drawText(Canvas canvas, String text, int color){
         int width = getWidth();
         int height = getHeight();
@@ -113,6 +141,10 @@ public class DownloadBtn extends View {
         canvas.restore();
     }
 
+    /**
+     * 绘制背景线
+     * @param canvas
+     */
     private void drawBgLine(Canvas canvas){
         //        先绘制最外层边框
         int strokeWidth = 0;
@@ -129,12 +161,22 @@ public class DownloadBtn extends View {
 //        从0、0点开始
         path.moveTo(0,0);
 //        左边圆角的上下左右坐标
-        RectF leftRect = new RectF(strokeWidth, strokeWidth, arcWidth - strokeWidth, arcWidth - strokeWidth);
+        leftRect.setEmpty();
+        leftRect.left = strokeWidth;
+        leftRect.top = strokeWidth;
+        leftRect.right = arcWidth - strokeWidth;
+        leftRect.bottom = arcWidth - strokeWidth;
         path.addArc(leftRect, 90, 180);
+
 //        顶部的连接线
         path.lineTo(width - (arcWidth / 2), strokeWidth);
+
 //        右边圆角的上下左右坐标
-        RectF rightRect = new RectF(width - arcWidth, strokeWidth, width - strokeWidth, arcWidth - strokeWidth);
+        rightRect.setEmpty();
+        rightRect.left = width - arcWidth;
+        rightRect.top = strokeWidth;
+        rightRect.right = width - strokeWidth;
+        rightRect.bottom = arcWidth - strokeWidth;
         path.addArc(rightRect, -90, 180);
 //        底部的连接线
         path.lineTo(arcWidth / 2, height - strokeWidth);

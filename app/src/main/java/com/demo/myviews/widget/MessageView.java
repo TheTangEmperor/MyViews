@@ -34,6 +34,8 @@ public class MessageView extends View {
     private int total = 100;
     private int radius = 15;
     private static final String tag = "MessageView";
+    private RectF oval = new RectF();
+    private Rect textRect = new Rect();
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -47,7 +49,11 @@ public class MessageView extends View {
         mpaint.setStrokeWidth(radius);
         Log.d(tag,"==: " + percent * sweepAngle);
 //        圆弧的大小 left和top的位置为画笔的宽度，right和bottom为当前view的大小减去画笔的宽度
-        RectF oval = new RectF(radius, radius, getWidth() - radius, getHeight() - radius);
+        oval.setEmpty();
+        oval.left = radius;
+        oval.top = radius;
+        oval.right = getWidth() - radius;
+        oval.bottom = getHeight() - radius;
 //       画第一个背景圆弧
         canvas.drawArc(oval, 90,  sweepAngle, false, mpaint);
 //      画进度圆弧
@@ -59,11 +65,11 @@ public class MessageView extends View {
         mpaint.setColor(Color.MAGENTA);
         mpaint.setTextSize(30);
 //        mpaint.setTypeface(Typeface.DEFAULT_BOLD);
-        Rect rect = new Rect();
+        textRect.setEmpty();
         String text = String.valueOf(prog);
-        mpaint.getTextBounds(text, 0, text.length(), rect);
+        mpaint.getTextBounds(text, 0, text.length(), textRect);
 //        画进度
-        canvas.drawText(text, (getWidth() / 2) - (rect.width() / 2), (getHeight() / 2) + (rect.height() / 2), mpaint);
+        canvas.drawText(text, (getWidth() / 2) - (textRect.width() / 2), (getHeight() / 2) + (textRect.height() / 2), mpaint);
 
 
     }
