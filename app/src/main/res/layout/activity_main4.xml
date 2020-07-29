@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity4">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/llTabContainer"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.demo.myviews.widget.TextColorChangeView
+            android:textSize="15sp"
+            android:text="地动山摇"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <com.demo.myviews.widget.TextColorChangeView
+            android:textSize="15sp"
+            android:text="摇摇欲坠"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <com.demo.myviews.widget.TextColorChangeView
+            android:textSize="15sp"
+            android:text="坠入深渊"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <com.demo.myviews.widget.TextColorChangeView
+            android:textSize="15sp"
+            android:text="冤冤相报"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/vpPage"/>
+
+
+
+</LinearLayout>
