@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -41,7 +42,10 @@ public class TextColorChangeView extends TextView {
     private Paint changePaint = new Paint();
 //    进度
     private float progress = 0;
-    private Rect rect = new Rect();
+//    之前
+    private boolean front  = true;
+//    之后
+    private boolean after = false;
 
 
     /**
@@ -54,7 +58,13 @@ public class TextColorChangeView extends TextView {
     protected void onDraw(Canvas canvas) {
         String text = getText().toString();
         if (!TextUtils.isEmpty(text)){
-            drawText(canvas, text, 0 , (int) (getWidth() * progress));
+            int position = (int) (getWidth() * progress);
+            if (after){
+                drawText(canvas, text, 0 , position);
+            }else if (front){
+                drawText(canvas, text, getWidth() - position , getWidth());
+            }
+
         }
     }
 
@@ -74,18 +84,23 @@ public class TextColorChangeView extends TextView {
         canvas.clipRect(0, 0, getWidth(), getHeight());
         int textWidth = (int) normalPaint.measureText(text);
         int textHeight = (int) (normalPaint.descent() + normalPaint.descent());
-        canvas.drawText(text, getMeasuredWidth() / 2 - textWidth / 2 , getMeasuredHeight() / 2 + textHeight / 2,normalPaint);
+        canvas.drawText(text, getWidth() / 2 - textWidth / 2 , getHeight() / 2 + textHeight / 2,normalPaint);
         canvas.restore();
 
 
         canvas.save();
         canvas.clipRect(left, 0 , right, getHeight());
-        canvas.drawText(text, getMeasuredWidth() / 2 - textWidth / 2 , getHeight() / 2 + textHeight / 2, changePaint);
+        canvas.drawText(text, getWidth() / 2 - textWidth / 2 , getHeight() / 2 + textHeight / 2, changePaint);
         canvas.restore();
     }
 
     public void setProgress(float progress) {
         this.progress = progress;
         invalidate();
+    }
+
+    public void setAfter(boolean after) {
+        this.after = after;
+        this.front = !after;
     }
 }

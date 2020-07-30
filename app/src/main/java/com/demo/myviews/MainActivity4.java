@@ -84,11 +84,24 @@ public class MainActivity4 extends AppCompatActivity {
                 System.out.println("position: " + position);
                 System.out.println("positionOffset: " + positionOffset);
                 System.out.println("positionOffsetPixels: " + positionOffsetPixels);
+                /**
+                 * 通过下标获取当前的指示器
+                 * 设置after为false表示当前不是下一个要完全显示的指示器
+                 * 设置进度为 1-positionoffset代表着将当前显示的指示器渐渐取消掉高亮
+                 */
                 TextColorChangeView cur = (TextColorChangeView) llTabContainer.getChildAt(position);
-                cur.setProgress(positionOffset);
+                cur.setAfter(false);
+                cur.setProgress(1-positionOffset);
 
+                /**
+                 * 下一个不等于空的情况下设置为要显示的指示器，并把当前viewpager页面显示的进度传递给指示器用作渐变效果
+                 */
                 TextColorChangeView next = (TextColorChangeView) llTabContainer.getChildAt(position + 1);
-                next.setProgress(positionOffset);
+                if (next != null){
+                    next.setAfter(true);
+                    next.setProgress(positionOffset);
+                }
+
             }
 
             @Override
