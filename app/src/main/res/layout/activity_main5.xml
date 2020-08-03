@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity5">
+
+    <com.demo.myviews.widget.SlidingMenu
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+
+                android:orientation="vertical"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:padding="30dp"
+                    android:src="@android:drawable/ic_menu_my_calendar"
+                    android:background="@color/detail_comment_user_level_titel_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:drawablePadding="20dp"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="我的星标"
+                    android:drawableLeft="@android:drawable/btn_star"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/llSlidingContent"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </com.demo.myviews.widget.SlidingMenu>
+
+</FrameLayout>
