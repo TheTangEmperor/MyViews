@@ -1,6 +1,7 @@
 package com.demo.myviews.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,10 +27,14 @@ public class DownloadBtn extends View {
 
     public DownloadBtn(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DownloadBtn);
+        color = typedArray.getColor(R.styleable.DownloadBtn_loadingColor, context.getResources().getColor(R.color.detail_downloadbutton_processing));
+        normalColor = typedArray.getColor(R.styleable.DownloadBtn_normalColor, Color.BLUE);
+        finishColor = typedArray.getColor(R.styleable.DownloadBtn_finishColor, context.getResources().getColor(R.color.detail_comment_user_level_titel_color));
+        textSize = (int) typedArray.getDimension(R.styleable.DownloadBtn_txtSize, 25);
+        typedArray.recycle();
         mpint = new Paint(Paint.ANTI_ALIAS_FLAG);
         path = new Path();
-        color = context.getResources().getColor(R.color.detail_downloadbutton_processing);
-        finishColor = context.getResources().getColor(R.color.detail_comment_user_level_titel_color);
     }
 
     public DownloadBtn(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -47,8 +52,12 @@ public class DownloadBtn extends View {
     private int prog = 0;
 //    下载中的color
     private int color = 0x0000;
+    //    未下载时color
+    private int normalColor = 0x0000;
+
     private int finishColor = 0x0000;
     private int max = 100;
+    private int textSize = 25;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -116,7 +125,7 @@ public class DownloadBtn extends View {
         drawBgLine(canvas);
 //      绘制圆角内部填充色
         mpint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mpint.setColor(Color.BLUE);
+        mpint.setColor(normalColor);
         canvas.drawPath(path, mpint);
 //        绘制中间文字
         drawText(canvas, "下载", Color.WHITE);
@@ -133,7 +142,7 @@ public class DownloadBtn extends View {
         int height = getHeight();
 
         canvas.save();
-        mpint.setTextSize(25);
+        mpint.setTextSize(textSize);
         mpint.setColor(color);
         int textW = (int) mpint.measureText(text);
         int textH = (int) (mpint.descent() + mpint.ascent());
@@ -204,5 +213,9 @@ public class DownloadBtn extends View {
 
     public int getState() {
         return state;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

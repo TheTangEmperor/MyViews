@@ -26,7 +26,7 @@ public class TextColorChangeView extends TextView {
         super(context, attrs, defStyleAttr);
 //        初始化默认画笔设置
         normalPaint.setAntiAlias( true);
-        normalPaint.setColor(Color.DKGRAY);
+        normalPaint.setColor(getTextColors().getDefaultColor());
         normalPaint.setTextSize(getTextSize());
 //      初始化变化的画笔设置
         changePaint.setAntiAlias( true);
