@@ -1,4 +1,4 @@
-package com.demo.myviews.fragments.dummy;
+package com.demo.myviews.taptap.fragments.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

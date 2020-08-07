@@ -1,11 +1,12 @@
 package com.demo.myviews;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.demo.myviews.fragments.RecommentFragment;
-import com.demo.myviews.fragments.VideoFragment;
+import com.demo.myviews.taptap.fragments.RecommentFragment;
+import com.demo.myviews.taptap.fragments.VideoFragment;
 import com.demo.myviews.widget.TextColorChangeView;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class MainActivity6 extends AppCompatActivity {
     private RelativeLayout rlNavigationBar;
     private LinearLayout llTitleContainer;
     private List<Fragment> fragmentList;
+    private static final String TAG = "MainActivity6";
+    private int oldY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,13 @@ public class MainActivity6 extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
+                Log.d(TAG, "onPageSelected: " + position + " Y: " + rlNavigationBar.getTranslationY());
+                if (position == 1){
+                    oldY = (int) rlNavigationBar.getTranslationY();
+                    rlNavigationBar.setTranslationY(0);
+                }else {
+                    rlNavigationBar.setTranslationY(oldY);
+                }
             }
 
             @Override

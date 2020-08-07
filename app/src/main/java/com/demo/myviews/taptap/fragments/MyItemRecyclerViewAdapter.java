@@ -1,4 +1,4 @@
-package com.demo.myviews.fragments;
+package com.demo.myviews.taptap.fragments;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.demo.myviews.R;
-import com.demo.myviews.fragments.dummy.DummyContent.DummyItem;
+import com.demo.myviews.taptap.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 

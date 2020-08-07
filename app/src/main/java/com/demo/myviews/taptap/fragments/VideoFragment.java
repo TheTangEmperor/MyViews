@@ -1,4 +1,4 @@
-package com.demo.myviews.fragments;
+package com.demo.myviews.taptap.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.demo.myviews.R;
-import com.demo.myviews.fragments.dummy.DummyContent;
+import com.demo.myviews.taptap.fragments.dummy.DummyContent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

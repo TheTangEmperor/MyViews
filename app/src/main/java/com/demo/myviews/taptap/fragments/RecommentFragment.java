@@ -1,4 +1,4 @@
-package com.demo.myviews.fragments;
+package com.demo.myviews.taptap.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.demo.myviews.R;
-import com.demo.myviews.fragments.dummy.DummyContent;
+import com.demo.myviews.taptap.fragments.dummy.DummyContent;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;

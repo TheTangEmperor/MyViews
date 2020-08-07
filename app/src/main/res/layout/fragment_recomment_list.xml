@@ -16,7 +16,6 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
-
             android:layout_height="match_parent">
 
             <ImageView
@@ -26,50 +25,6 @@
                 android:src="@mipmap/game_banner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-
-            <TextView
-                android:textStyle="bold"
-                android:layout_marginBottom="60dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="疯狂的小镇"
-                android:textColor="@android:color/white"/>
-
-            <TextView
-                android:gravity="center"
-                android:layout_marginBottom="20dp"
-                android:drawableTop="@mipmap/add"
-                android:layout_marginStart="50dp"
-                android:layout_gravity="bottom"
-                android:text="关注"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:layout_width="50dp"
-                android:layout_height="30dp"/>
-
-            <TextView
-                android:gravity="center"
-                android:layout_marginBottom="20dp"
-                android:drawableTop="@mipmap/add"
-                android:layout_marginEnd="50dp"
-                android:layout_gravity="bottom|right"
-                android:text="详情"
-                android:textSize="15sp"
-                android:textColor="@android:color/white"
-                android:layout_width="50dp"
-                android:layout_height="30dp"/>
-
-            <com.demo.myviews.widget.DownloadBtn
-                app:txtSize="12dp"
-                app:loadingColor="@color/detail_downloadbutton_processing"
-                app:normalColor="@color/colorAccent"
-                app:finishColor="@color/detail_comment_user_level_titel_color"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_width="100dp"
-                android:layout_height="30dp"/>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -86,9 +41,66 @@
 
     <LinearLayout
         android:background="@color/colorAccent"
-        app:layout_behavior="com.demo.myviews.behavior.NavigationBarBehavior"
+        app:layout_behavior=".taptap.behavior.NavigationBarBehavior"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
+
+
+
+    <RelativeLayout
+        app:layout_behavior="com.demo.myviews.taptap.behavior.TitleBarBehavior"
+        android:id="@+id/rlTitleBar"
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+
+        android:layout_height="80dp">
+
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginBottom="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="疯狂的小镇"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:gravity="center"
+            android:drawableTop="@mipmap/add"
+            android:layout_marginStart="50dp"
+            android:layout_alignParentBottom="true"
+            android:text="关注"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_width="50dp"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:gravity="center"
+            android:drawableTop="@mipmap/add"
+            android:layout_marginEnd="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="详情"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_width="50dp"
+            android:layout_height="30dp"/>
+
+        <com.demo.myviews.widget.DownloadBtn
+            app:txtSize="12dp"
+            app:loadingColor="@color/detail_downloadbutton_processing"
+            app:normalColor="@color/colorAccent"
+            app:finishColor="@color/detail_comment_user_level_titel_color"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="100dp"
+            android:layout_height="30dp"/>
+
+    </RelativeLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
