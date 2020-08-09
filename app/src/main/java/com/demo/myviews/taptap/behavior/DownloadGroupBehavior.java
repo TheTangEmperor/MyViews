@@ -9,11 +9,11 @@ import com.demo.myviews.R;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-public class TitleBarBehavior extends CoordinatorLayout.Behavior<View> {
-    public TitleBarBehavior() {
+public class DownloadGroupBehavior extends CoordinatorLayout.Behavior<View> {
+    public DownloadGroupBehavior() {
     }
 
-    public TitleBarBehavior(Context context, AttributeSet attrs) {
+    public DownloadGroupBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

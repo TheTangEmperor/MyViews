@@ -8,6 +8,7 @@
     android:orientation="vertical"
     >
 
+<!--  header  -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         app:elevation="0dp"
@@ -31,7 +32,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-
+<!-- 列表 -->
     <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/list"
@@ -39,16 +40,17 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/fragment_recomment"/>
 
+<!--  navigationBar背景  -->
     <LinearLayout
         android:background="@color/colorAccent"
-        app:layout_behavior=".taptap.behavior.NavigationBarBehavior"
+        app:layout_behavior="com.demo.myviews.taptap.behavior.NavigationBarBehavior"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
 
 
-
+<!-- 下载Group -->
     <RelativeLayout
-        app:layout_behavior="com.demo.myviews.taptap.behavior.TitleBarBehavior"
+        app:layout_behavior="com.demo.myviews.taptap.behavior.DownloadGroupBehavior"
         android:id="@+id/rlTitleBar"
         android:layout_marginTop="200dp"
         android:layout_width="match_parent"

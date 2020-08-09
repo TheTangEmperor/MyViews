@@ -7,27 +7,8 @@
     tools:context=".MainActivity6">
 
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="320dp">-->
-
-<!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
-<!--            app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <ImageView-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:src="@mipmap/ms_banner"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"/>-->
-
-<!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
-
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
-
-
     <androidx.viewpager.widget.ViewPager
+
         android:id="@+id/vpBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

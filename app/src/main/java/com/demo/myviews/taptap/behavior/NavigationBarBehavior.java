@@ -33,7 +33,6 @@ public class NavigationBarBehavior extends CoordinatorLayout.Behavior<View> {
             ViewGroup rootView = (ViewGroup) parent.getParent().getParent();
             navigationBar = rootView.findViewById(R.id.rlNavigationBar);
             Log.d(TAG, "layoutDependsOn: " + navigationBar);
-//            barColor = rootView.getContext().getResources().getColor(R.color.colorAccent);
         }
         return dependency.getId() == R.id.list;
     }
@@ -52,13 +51,13 @@ public class NavigationBarBehavior extends CoordinatorLayout.Behavior<View> {
         float offset = 0;
         int color = barColor;
 
-//        在header的下半部移动  减去10是为了修复移到屏幕外后还有几像素的露白
+//        处于原始距离的下半部移动  减去10是为了修复移到屏幕外后还有几像素的露白
         if (depY > (ban-10)){
-//            求出移动距离占child的比重  最后乘以2是为了加大移动距离形成视觉差
+//            求出移动距离占child的比重  因为除的是原始距离所以需要乘以2是才能形成视觉差
             offset = (depY / translationY * child.getHeight() - child.getHeight()) * 2;
             color = Color.TRANSPARENT;
         }else {
-//            在header的上半部移动
+//            处于原始距离的上半部移动
 //            当滑动到上半部时直接使用一半header的高度计算出占child的比重
             offset = depY / ban * child.getHeight();
 //            由于是从屏幕外到屏幕内 所以需要从负值到0
@@ -68,8 +67,6 @@ public class NavigationBarBehavior extends CoordinatorLayout.Behavior<View> {
         child.setBackgroundColor(color);
         child.setTranslationY(offset);
         navigationBar.setTranslationY(offset);
-
-
         return super.onDependentViewChanged(parent, child, dependency);
     }
 
