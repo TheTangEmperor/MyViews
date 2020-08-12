@@ -9,8 +9,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -23,17 +25,12 @@ public class ViewPatternUnlock extends View {
 
     public ViewPatternUnlock(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        bigPaint = new Paint();
-        bigPaint.setAntiAlias(true);
-        bigPaint.setStrokeWidth(5);
-        bigPaint.setStyle(Paint.Style.STROKE);
-        bigPaint.setColor(Color.BLUE);
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setStrokeWidth(5);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(Color.BLUE);
 
-        smallPaint = new Paint();
-        smallPaint.setColor(Color.RED);
-        smallPaint.setStrokeWidth(5);
-        smallPaint.setStyle(Paint.Style.STROKE);
-        smallPaint.setAntiAlias(true);
     }
 
     public ViewPatternUnlock(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -44,9 +41,10 @@ public class ViewPatternUnlock extends View {
     private int lineCount = 3;
     private int radius;
     private static final String TAG = "ViewPatternUnlock";
-    private Paint bigPaint;
-    private Paint smallPaint;
+    private Paint mPaint;
     private LinkedHashSet<Integer> selectCircles = new LinkedHashSet<>();
+    private Point motionPoint;
+    private boolean isError = false;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -54,10 +52,12 @@ public class ViewPatternUnlock extends View {
 //        始终都使用最小值来进行半径取值
         int measuredWidth = Math.min(getMeasuredWidth(), getMeasuredHeight());
         radius = measuredWidth / (lineCount * 3 + 1);
+        circles.clear();
         Log.d(TAG, "radius: " + radius);
         for (int i = 0; i < lineCount; i++) {
             for (int j = 0; j < lineCount; j++) {
                 circles.add(new Point(radius * (3 * i + 2), radius * (3 * j + 2)));
+                Log.d(TAG, "onMeasure: " + i + " J: " + j);
             }
         }
     }
@@ -66,32 +66,86 @@ public class ViewPatternUnlock extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawBigAndSmall(canvas);
-
+        drawConnectLine(canvas);
     }
 
     void drawBigAndSmall(Canvas canvas) {
-        Log.d(TAG, "drawAll_Cicle: ----------------------------------");
+//        Log.d(TAG, "drawBigAndSmall: ----------------" + selectCircles.size());
         for (int i = 0; i < circles.size(); i++) {
             Point point = circles.get(i);
-            canvas.drawCircle(point.x, point.y, radius, bigPaint);
-//            Log.d(TAG, "x: " + point.x + " y: " + point.y);
-            canvas.drawCircle(point.x, point.y, radius / 4, smallPaint);
+            mPaint.setColor(Color.LTGRAY);
+            canvas.drawCircle(point.x, point.y, radius, mPaint);
+            mPaint.setColor(Color.DKGRAY);
+            canvas.drawCircle(point.x, point.y, radius / 4, mPaint);
+        }
+        Iterator<Integer> iterator = selectCircles.iterator();
+        while (iterator.hasNext()){
+            Integer next = iterator.next();
+            Point point = circles.get(next);
+            if (isError){
+                mPaint.setColor(Color.RED);
+            }else {
+                mPaint.setColor(Color.BLUE);
+            }
+            canvas.drawCircle(point.x, point.y, radius, mPaint);
+            canvas.drawCircle(point.x, point.y, radius / 4, mPaint);
         }
 
+    }
+
+    void drawConnectLine(Canvas canvas){
+        Iterator<Integer> iterator = selectCircles.iterator();
+        Point currentPoint = null;
+        if (isError){
+            mPaint.setColor(Color.RED);
+        }else {
+            mPaint.setColor(Color.GREEN);
+        }
+
+        while (iterator.hasNext()){
+            Integer next = iterator.next();
+            if (currentPoint == null){
+                currentPoint = circles.get(next);
+            }else {
+                Point toPoint = circles.get(next);
+                canvas.drawLine(currentPoint.x, currentPoint.y, toPoint.x, toPoint.y,mPaint);
+                currentPoint = toPoint;
+            }
+        }
+        if (motionPoint != null && currentPoint != null){
+            canvas.drawLine(currentPoint.x, currentPoint.y, motionPoint.x, motionPoint.y, mPaint);
+        }
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float moveX = event.getX();
-        float moveY = event.getY();
+        int moveX = (int) event.getX();
+        int moveY = (int) event.getY();
+
 
         switch(event.getAction()){
             case MotionEvent.ACTION_UP:
+                Log.d(TAG, "ACTION_UP: -------------");
+                Iterator<Integer> iterator = selectCircles.iterator();
+                String result = "";
+                while (iterator.hasNext()){
+                    result = result + iterator.next();
+                }
+//                小于4组表示太短 提示错误
+                if (selectCircles.size() < 5){
 
-            break;
+                    makeError(result);
+                }else {
+                    makeSuccess(result);
+                }
+
+                break;
+            case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
+                motionPoint = new Point(moveX, moveY);
                 addSelectPosition(moveX, moveY);
+                invalidate();
             break;
         }
 
@@ -99,15 +153,42 @@ public class ViewPatternUnlock extends View {
         return true;
     }
 
-    void addSelectPosition(float xMove, float yMove){
+    void makeError(String result){
+        Toast.makeText(getContext(), "手势密码太短：" + result, Toast.LENGTH_SHORT).show();
+        isError = true;
+        invalidate();
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                selectCircles.clear();
+                motionPoint = null;
+                isError = false;
+                invalidate();
+            }
+        },1000);
+    }
+
+    void  makeSuccess(String result){
+        Toast.makeText(getContext(), "手势绘制成功：" + result, Toast.LENGTH_SHORT).show();
+        selectCircles.clear();
+        motionPoint = null;
+        invalidate();
+    }
+
+    void addSelectPosition(int xMove, int yMove){
+//        Log.d(TAG, "onTouchEvent: ------------------------");
         for (int i = 0; i < circles.size(); i++) {
             Point point = circles.get(i);
-                Log.d(TAG, "moveX: " + xMove + " moveY: " + yMove + " x: " + point.x + " y: " + point.y);
-            if (point.x > xMove && point.y > yMove){
+//            Log.d(TAG, "onTouchEvent: " + point.toString() + " index: " + i + " moveX: " + xMove + " moveY: " + yMove);
+            float left = Math.abs(xMove - point.x);
+            float top = Math.abs(yMove - point.y);
+//            Log.d(TAG, "onTouchEvent: left: " + left + "  top: " + top + " radius: " + radius);
+            if (left < radius && top < radius){
+//                Log.d(TAG, "onTouchEvent:  " + i);
                 selectCircles.add(i);
-                Log.d(TAG, "addSelectPosition: " + i);
-                break;
             }
+
+
         }
 
     }
