@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,6 +44,7 @@ public class ViewPatternUnlock extends View {
     private LinkedHashSet<Integer> selectCircles = new LinkedHashSet<>();
     private Point motionPoint;
     private boolean isError = false;
+    private OnPatternMakeListener makeListener;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -56,8 +56,8 @@ public class ViewPatternUnlock extends View {
         Log.d(TAG, "radius: " + radius);
         for (int i = 0; i < lineCount; i++) {
             for (int j = 0; j < lineCount; j++) {
-                circles.add(new Point(radius * (3 * i + 2), radius * (3 * j + 2)));
-                Log.d(TAG, "onMeasure: " + i + " J: " + j);
+                circles.add(new Point(radius * (3 * j + 2), radius * (3 * i + 2)));
+//                Log.d(TAG, "onMeasure: " + i + " J: " + j);
             }
         }
     }
@@ -127,6 +127,8 @@ public class ViewPatternUnlock extends View {
         switch(event.getAction()){
             case MotionEvent.ACTION_UP:
                 Log.d(TAG, "ACTION_UP: -------------");
+                if (selectCircles.size() < 1)
+                    return true;
                 Iterator<Integer> iterator = selectCircles.iterator();
                 String result = "";
                 while (iterator.hasNext()){
@@ -154,7 +156,6 @@ public class ViewPatternUnlock extends View {
     }
 
     void makeError(String result){
-        Toast.makeText(getContext(), "手势密码太短：" + result, Toast.LENGTH_SHORT).show();
         isError = true;
         invalidate();
         postDelayed(new Runnable() {
@@ -165,14 +166,15 @@ public class ViewPatternUnlock extends View {
                 isError = false;
                 invalidate();
             }
-        },1000);
+        },500);
+        if (makeListener != null)makeListener.onMakeError(result);
     }
 
     void  makeSuccess(String result){
-        Toast.makeText(getContext(), "手势绘制成功：" + result, Toast.LENGTH_SHORT).show();
         selectCircles.clear();
         motionPoint = null;
         invalidate();
+        if (makeListener != null)makeListener.onMakeSuccess(result);
     }
 
     void addSelectPosition(int xMove, int yMove){
@@ -187,9 +189,16 @@ public class ViewPatternUnlock extends View {
 //                Log.d(TAG, "onTouchEvent:  " + i);
                 selectCircles.add(i);
             }
-
-
         }
 
+    }
+
+    public void setMakeListener(OnPatternMakeListener makeListener) {
+        this.makeListener = makeListener;
+    }
+
+    public interface OnPatternMakeListener {
+        void onMakeError(String result);
+        void onMakeSuccess(String result);
     }
 }
