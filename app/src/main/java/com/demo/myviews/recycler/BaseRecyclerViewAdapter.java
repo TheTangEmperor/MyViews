@@ -59,4 +59,9 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     public T getItemData(int position){
         return datas.get(position);
     }
+
+    public void setDatas(List<T> list){
+        if (list == null) return;
+        this.datas = list;
+    }
 }

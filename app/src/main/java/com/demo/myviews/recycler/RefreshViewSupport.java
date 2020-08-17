@@ -1,9 +1,12 @@
 package com.demo.myviews.recycler;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import com.demo.myviews.R;
@@ -36,11 +39,20 @@ public class RefreshViewSupport implements RefreshViewProtocol{
 
     @Override
     public void refresh() {
+        Log.d(TAG, "refresh: ");
+//        RotateAnimation animator = new RotateAnimation(0, 360, 0.5f,0.5f);
+        // 刷新的时候不断旋转
+        RotateAnimation animator = new RotateAnimation(0, 720,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animator.setDuration(1200);
+        animator.setRepeatCount(-1);
+        rotateView.startAnimation(animator);
 
     }
 
     @Override
     public void closeRefresh() {
-
+        Log.d(TAG, "closeRefresh: ");
+        rotateView.clearAnimation();
     }
 }
