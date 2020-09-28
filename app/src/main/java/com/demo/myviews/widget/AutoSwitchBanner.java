@@ -3,19 +3,31 @@ package com.demo.myviews.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Gallery;
+import android.widget.SpinnerAdapter;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import androidx.annotation.NonNull;
 
 public class AutoSwitchBanner extends Gallery implements View.OnTouchListener {
 
 
-    private int lenth;
+    private int lenth = -1;
     private int delayTime = 3000;
     private Timer timer;
+    private int layoutId = -1;
+    private BannerAdapter mAdapter;
+    private ArrayList<String> datas;
+    private MyBannerCircle circle;
 
     public AutoSwitchBanner(Context context) {
         super(context);
@@ -32,10 +44,6 @@ public class AutoSwitchBanner extends Gallery implements View.OnTouchListener {
         setOnTouchListener(this);
     }
 
-    public void setLenth(int lenth) {
-        this.lenth = lenth;
-    }
-
     public void setDelayTime(int delayTime) {
         this.delayTime = delayTime;
     }
@@ -45,11 +53,11 @@ public class AutoSwitchBanner extends Gallery implements View.OnTouchListener {
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 stopTimer();
-            break;
+                break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 startTimer();
-            break;
+                break;
         }
         return false;
     }
@@ -82,6 +90,83 @@ public class AutoSwitchBanner extends Gallery implements View.OnTouchListener {
         }
         timer = null;
     }
+
+    @Override
+    public void setAdapter(SpinnerAdapter adapter) {
+
+    }
+
+    public void setAutoAdapter(BannerAdapter adapter) {
+        if (layoutId == -1 || datas == null){
+            return;
+        }
+        circle.setCount(lenth);
+        super.setAdapter(adapter);
+        setOnItemSelectedListener(itemSelectedListener);
+    }
+
+    public void setAutoAdapter(){
+        setAutoAdapter(new BannerAdapter());
+    }
+
+    public void setDatas(@NonNull ArrayList<String> datas) {
+        this.datas = datas;
+        lenth = datas.size();
+    }
+
+    public void setCircle(MyBannerCircle circle) {
+        this.circle = circle;
+    }
+
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
+    }
+
+    private OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if (circle == null || lenth == -1){
+                return;
+            }
+            int iindex = position % lenth;
+            circle.setSelectIndex(iindex);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    class BannerAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return "cur: " + position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null){
+                convertView = LayoutInflater.from(AutoSwitchBanner.this.getContext()).inflate(layoutId, null);
+            }
+//            TextView lable = convertView.findViewById(R.id.tvFindLable);
+//            int iindex = position % lenth;
+//            lable.setText("current: " + position + "\r\n" + "%= " + iindex);
+            return convertView;
+        }
+    }
+
 
 
 
